@@ -12,8 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Budget> Budgets { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -44,17 +43,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(c => c.Id);
-        });
-
-        modelBuilder.Entity<Budget>(entity =>
-        {
-            entity.HasKey(b => b.Id);
-            entity.Property(b => b.Amount).HasColumnType("decimal(18,2)");
-
-            entity.HasOne(b => b.Category)
-                .WithMany(c => c.Budgets)
-                .HasForeignKey(b => b.CateogryId)
-                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

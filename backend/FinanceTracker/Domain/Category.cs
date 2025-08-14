@@ -8,5 +8,4 @@ public class Category
     public Guid UserId { get; set; }
     
     public ICollection<Transaction>? Transactions { get; set;  }
-    public ICollection<Budget>? Budgets { get; set; }
 }

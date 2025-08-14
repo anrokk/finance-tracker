@@ -9,6 +9,8 @@ public enum TransactionType
 public class Transaction
 {
     public Guid Id { get; set; }
+    
+    public string Name { get; set; } = default!;
 
     public string Description { get; set; } = default!;
     public decimal Amount { get; set; }
