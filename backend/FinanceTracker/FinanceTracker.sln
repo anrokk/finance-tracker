@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{942B81E7-FC0E-4D7E-B2D6-DF1BB3F40D90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,13 @@ Global
 		{942B81E7-FC0E-4D7E-B2D6-DF1BB3F40D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{942B81E7-FC0E-4D7E-B2D6-DF1BB3F40D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{942B81E7-FC0E-4D7E-B2D6-DF1BB3F40D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF19306A-1A89-4D35-90C9-8896F9450594}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF19306A-1A89-4D35-90C9-8896F9450594}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF19306A-1A89-4D35-90C9-8896F9450594}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF19306A-1A89-4D35-90C9-8896F9450594}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
