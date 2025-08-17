@@ -10,7 +10,8 @@ public class CategoryBllMapper
         return new CategoryBllDto
         {
             Id = dalDto.Id,
-            Name = dalDto.Name
+            Name = dalDto.Name,
+            UserId = dalDto.UserId,
         };
     }
 

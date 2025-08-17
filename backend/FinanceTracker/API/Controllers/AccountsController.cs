@@ -11,36 +11,70 @@ namespace API.Controllers;
 [Authorize]
 public class AccountsController(IAccountService accountService) : ControllerBase
 {
-    
-    //GET /api/accounts
+    private Guid UserId => new(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    // GET /api/accounts
     [HttpGet]
     public async Task<IActionResult> GetUserAccounts()
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userIdString))
-        {
-            return Unauthorized();
-        }
-
-        var userId = new Guid(userIdString);
-        var accounts = await accountService.GetAllByUserIdAsync(userId);
-        
+        var accounts = await accountService.GetAllByUserIdAsync(UserId);
         return Ok(accounts);
     }
-    
-    //POST /api/accounts
+
+    // GET /api/accounts/{id}
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetSingleAccount(Guid id)
+    {
+        var account = await accountService.GetAccountByIdAsync(id, UserId);
+
+        if (account == null || account.UserId != UserId)
+        {
+            return NotFound();
+        }
+
+        return Ok(account);
+    }
+
+    // POST /api/accounts
     [HttpPost]
     public async Task<IActionResult> CreateAccount([FromBody] CreateAccountBllDto createDto)
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userIdString))
-        {
-            return Unauthorized();
-        }
-        
-        createDto.UserId = new Guid(userIdString);
+        createDto.UserId = UserId;
 
         var newAccount = await accountService.AddAsync(createDto);
-        return Ok(newAccount);
+
+        return CreatedAtAction(nameof(GetSingleAccount), new { id = newAccount.Id }, newAccount);
+    }
+
+    // PUT /api/accounts/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAccount(Guid id, [FromBody] CreateAccountBllDto updateDto)
+    {
+        var account = await accountService.GetAccountByIdAsync(id, UserId);
+
+        if (account == null || account.UserId != UserId)
+        {
+            return NotFound();
+        }
+
+        updateDto.UserId = UserId;
+        await accountService.UpdateAsync(id, updateDto);
+
+        return NoContent();
+    }
+    
+    // DELETE /api/accounts/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAccount(Guid id)
+    {
+        var account = await accountService.GetAccountByIdAsync(id, UserId);
+        
+        if (account == null || account.UserId != UserId)
+        {
+            return NotFound();
+        }
+        
+        await accountService.DeleteAsync(id);
+        return NoContent();
     }
 }

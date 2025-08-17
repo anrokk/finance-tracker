@@ -11,7 +11,8 @@ public class AccountBllMapper
         {
             Id = dalDto.Id,
             Name = dalDto.Name,
-            StartingBalance = dalDto.StartingBalance
+            StartingBalance = dalDto.StartingBalance,
+            UserId = dalDto.UserId,
         };
     }
 

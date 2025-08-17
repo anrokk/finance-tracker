@@ -10,7 +10,8 @@ public class CategoryDalMapper
         return new CategoryDalDto
         {
             Id = category.Id,
-            Name = category.Name
+            Name = category.Name,
+            UserId = category.UserId
         };
     }
 

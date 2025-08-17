@@ -10,6 +10,7 @@ public class TransactionBllDto
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     public TransactionType Type { get; set; }
+    public Guid UserId { get; set; }
     public Guid? AccountId { get; set; }
     public string? AccountName { get; set; }
     public Guid? CategoryId { get; set; }

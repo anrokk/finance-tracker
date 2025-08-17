@@ -15,6 +15,7 @@ public class TransactionDalMapper
             Amount = entity.Amount,
             Date = entity.Date,
             Type = entity.Type,
+            UserId = entity.UserId,
             AccountId = entity.AccountId,
             AccountName = entity.Account?.Name,
             CategoryId = entity.CategoryId,

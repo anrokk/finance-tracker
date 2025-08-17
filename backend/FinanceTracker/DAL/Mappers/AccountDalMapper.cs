@@ -11,7 +11,8 @@ public class AccountDalMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            StartingBalance = entity.StartingBalance
+            StartingBalance = entity.StartingBalance,
+            UserId = entity.UserId
         };
     }
 

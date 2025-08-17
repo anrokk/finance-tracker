@@ -6,6 +6,8 @@ public class AccountBllDto
     public string Name { get; set; } = default!;
     public decimal StartingBalance { get; set; }
     public decimal CurrentBalance { get; set; }
+    
+    public Guid UserId { get; set; }
 }
 
 public class CreateAccountBllDto

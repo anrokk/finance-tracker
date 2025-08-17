@@ -15,6 +15,7 @@ public class TransactionBllMapper
             Amount = dalDto.Amount,
             Date = dalDto.Date,
             Type = dalDto.Type,
+            UserId = dalDto.UserId,
             AccountId = dalDto.AccountId,
             AccountName = dalDto.AccountName,
             CategoryId = dalDto.CategoryId,
