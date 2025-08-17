@@ -1,11 +1,14 @@
+using System.Security.Claims;
 using BLL.Contracts;
 using BLL.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AccountsController(IAccountService accountService) : ControllerBase
 {
     
@@ -13,9 +16,15 @@ public class AccountsController(IAccountService accountService) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUserAccounts()
     {
-        var userId = new Guid("11111111-1111-1111-1111-111111111111");
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            return Unauthorized();
+        }
 
+        var userId = new Guid(userIdString);
         var accounts = await accountService.GetAllByUserIdAsync(userId);
+        
         return Ok(accounts);
     }
     
@@ -23,7 +32,13 @@ public class AccountsController(IAccountService accountService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAccount([FromBody] CreateAccountBllDto createDto)
     {
-        createDto.UserId = new Guid("11111111-1111-1111-1111-111111111111");
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            return Unauthorized();
+        }
+        
+        createDto.UserId = new Guid(userIdString);
 
         var newAccount = await accountService.AddAsync(createDto);
         return Ok(newAccount);

@@ -1,13 +1,30 @@
+using System.Security.Claims;
 using BLL.Contracts;
 using BLL.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TransactionsController(ITransactionService transactionService) : ControllerBase
-{
+{ 
+    // GET /api/transactions
+    [HttpGet]
+    public async Task<IActionResult> GetAllUserTransactions()
+    {
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            return Unauthorized();
+        }
+        var userId = new Guid(userIdString);  
+        var transactions = await transactionService.GetAllByUserIdAsync(userId);
+        return Ok(transactions);
+    }
+    
     // GET /api/transactions/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetSingleTransaction(Guid id)
@@ -21,21 +38,16 @@ public class TransactionsController(ITransactionService transactionService) : Co
         return Ok(transaction);
     }
     
-    // GET /api/transactions
-    [HttpGet]
-    public async Task<IActionResult> GetAllUserTransactions()
-    {
-        var userId = new Guid("11111111-1111-1111-1111-111111111111");  // for now
-        var transactions = await transactionService.GetAllByUserIdAsync(userId);
-        return Ok(transactions);
-    }
-    
     // POST /api/transactions
     [HttpPost]
     public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionBllDto createDto)
     {
-        createDto.UserId = new Guid("11111111-1111-1111-1111-111111111111"); // for now
-
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            return Unauthorized();
+        }
+        createDto.UserId = new Guid(userIdString); 
         var newTransaction = await transactionService.AddAsync(createDto);
         return CreatedAtAction(nameof(GetSingleTransaction), new { id = newTransaction.Id }, newTransaction);
     }
@@ -44,7 +56,20 @@ public class TransactionsController(ITransactionService transactionService) : Co
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTransaction(Guid id, [FromBody] CreateTransactionBllDto updateDto)
     {
-        updateDto.UserId = new Guid("11111111-1111-1111-1111-111111111111"); // for now
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString))
+        {
+            return Unauthorized();
+        }
+
+        var existingTransaction = await transactionService.GetByIdAsync(id);
+        
+        if (existingTransaction == null)
+        {
+            return NotFound();
+        }
+        
+        updateDto.UserId = new Guid(userIdString); 
 
         await transactionService.UpdateAsync(id, updateDto);
         return NoContent();

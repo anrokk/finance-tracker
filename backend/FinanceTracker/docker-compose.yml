@@ -24,6 +24,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8081;http://+:8080
+      - Jwt__Key=${API_KEY}
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=FinanceTrackerDb;Username=postgres;Password=${POSTGRES_PASSWORD}
     depends_on:
       - db
