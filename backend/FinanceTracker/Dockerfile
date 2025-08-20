@@ -6,6 +6,7 @@ COPY API/*.csproj ./API/
 COPY BLL/*.csproj ./BLL/
 COPY DAL/*.csproj ./DAL/
 COPY Domain/*.csproj ./Domain/
+COPY Tests/*.csproj ./Tests/
 
 RUN dotnet restore
 

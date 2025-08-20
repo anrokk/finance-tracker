@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5FB47403-922D-4F61-8EAC-8D53F6145759}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,5 +36,9 @@ Global
 		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C52C5B79-CE5C-4812-B7D6-DD421D85BE3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB47403-922D-4F61-8EAC-8D53F6145759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB47403-922D-4F61-8EAC-8D53F6145759}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB47403-922D-4F61-8EAC-8D53F6145759}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB47403-922D-4F61-8EAC-8D53F6145759}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
