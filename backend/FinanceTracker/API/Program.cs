@@ -1,10 +1,13 @@
 using System.Text;
 using BLL.Contracts;
 using BLL.Service;
+using BLL.Validators;
+using BLL.Validators.Auth;
 using DAL;
 using DAL.Contracts;
 using DAL.Repositories;
 using Domain;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +59,12 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterBllDtoValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
