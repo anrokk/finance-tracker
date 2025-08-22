@@ -4,6 +4,7 @@ using System.Text;
 using BLL.DTOs;
 using BLL.DTOs.Identity;
 using Domain;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -11,31 +12,29 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace API.Controllers;
 
-
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(UserManager<AppUser> userManager, IConfiguration configuration) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterBllDto registerDto)
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterBllDto model,
+        [FromServices] IValidator<RegisterBllDto> validator
+    )
     {
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
+        }
+
         var user = new AppUser
         {
-            UserName = registerDto.Username,
-            Email = registerDto.Email
+            UserName = model.Username,
+            Email = model.Email
         };
 
-        if (registerDto.Password != registerDto.ConfirmPassword)
-        {
-            return BadRequest("Passwords do not match");
-        }
-        
-        if (await userManager.FindByEmailAsync(registerDto.Email) != null)
-        {
-            return BadRequest("User with this email already exists");
-        }
-        
-        var result = await userManager.CreateAsync(user, registerDto.Password);
+        var result = await userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
         {
@@ -46,19 +45,28 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginBllDto loginDto)
+    public async Task<IActionResult> Login(
+        [FromBody] LoginBllDto model,
+        [FromServices] IValidator<LoginBllDto> validator
+    )
     {
-        var user = await userManager.FindByEmailAsync(loginDto.Email);
-        if (user != null && await userManager.CheckPasswordAsync(user, loginDto.Password))
+        var validationResult = await validator.ValidateAsync(model);
+        if (!validationResult.IsValid)
+        {
+            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
+        }
+
+        var user = await userManager.FindByEmailAsync(model.Email);
+        if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
         {
             var authClaims = new List<Claim>
             {
-                new (ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-            
+
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
-            
+
             var token = new JwtSecurityToken(
                 issuer: configuration["Jwt:Issuer"],
                 audience: configuration["Jwt:Audience"],
@@ -73,7 +81,7 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
                 expiration = token.ValidTo
             });
         }
-        
+
         return Unauthorized("Invalid email or password");
     }
 }
