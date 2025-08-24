@@ -3,8 +3,11 @@
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
 import apiClient from '../services/apiClient';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+    const router = useRouter();
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -31,10 +34,12 @@ export default function LoginPage() {
 
             const { token } = response.data;
             localStorage.setItem('authToken', token);
+            router.push('/dashboard');
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 400) {
                     const validationErrors = err.response.data.errors;
+                    
                     if (validationErrors?.Email) {
                         setEmailError(validationErrors.Email[0]);
                     }
@@ -107,7 +112,7 @@ export default function LoginPage() {
                             disabled={loading}
                             className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
                         >
-                            {loading ? 'Signing in...' : 'Sign in'}
+                            {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </div>
                 </form>

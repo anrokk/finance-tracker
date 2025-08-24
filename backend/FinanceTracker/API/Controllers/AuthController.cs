@@ -38,7 +38,7 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
 
         if (result.Succeeded)
         {
-            return Ok();
+            return Ok(GenerateJwtToken(user));
         }
 
         return BadRequest(result.Errors);
@@ -59,29 +59,34 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
         var user = await userManager.FindByEmailAsync(model.Email);
         if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
         {
-            var authClaims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
-
-            var token = new JwtSecurityToken(
-                issuer: configuration["Jwt:Issuer"],
-                audience: configuration["Jwt:Audience"],
-                expires: DateTime.Now.AddHours(3),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-            );
-
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
-            });
+            return Ok(GenerateJwtToken(user));
         }
 
         return Unauthorized("Invalid email or password");
+    }
+
+    private object GenerateJwtToken(AppUser user)
+    {
+        var authClaims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
+
+        var token = new JwtSecurityToken(
+            issuer: configuration["Jwt:Issuer"],
+            audience: configuration["Jwt:Audience"],
+            expires: DateTime.Now.AddHours(3),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        );
+
+        return new
+        {
+            token = new JwtSecurityTokenHandler().WriteToken(token),
+            expiration = token.ValidTo
+        };
     }
 }
