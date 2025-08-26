@@ -3,10 +3,10 @@
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
 import apiClient from '../services/apiClient';
-import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 
 export default function RegisterPage() {
-    const router = useRouter();
+    const { login } = useAuth();
 
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -39,9 +39,8 @@ export default function RegisterPage() {
                 confirmPassword
             });
 
-            const { token } = response.data;
-            localStorage.setItem('authToken', token);
-            router.push('/dashboard');
+            login(response.data.token);
+
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 400) {

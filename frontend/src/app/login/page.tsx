@@ -3,20 +3,16 @@
 import { useState, FormEvent } from 'react';
 import axios from 'axios';
 import apiClient from '../services/apiClient';
-import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
-    const router = useRouter();
+    const { login } = useAuth();
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-
     const [formError, setFormError] = useState<string | null>(null);
-
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
-
-
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleLogin = async (e: FormEvent) => {
@@ -32,9 +28,8 @@ export default function LoginPage() {
                 password
             });
 
-            const { token } = response.data;
-            localStorage.setItem('authToken', token);
-            router.push('/dashboard');
+            login(response.data.token);
+            
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 400) {
