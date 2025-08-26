@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getAccounts, getTransactions } from "../../../services/apiService";
-import { Account, Transaction } from "../../../services/interfaces/interfaces";
+import { getAccounts, getTransactions } from "../services/apiService";
+import { Account, Transaction } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddAccountForm from "../components/AddAccountForm";
 

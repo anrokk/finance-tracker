@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from "react";
-import { createAccount } from "../../../services/apiService";
+import { createAccount } from "../services/apiService";
 
 interface AddAccountFormProps {
     onSuccess: () => void;

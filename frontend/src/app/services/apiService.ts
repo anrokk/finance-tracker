@@ -6,7 +6,7 @@ import {
     CreateTransactionData,
     Category,
     CreateCategoryData
-} from "./interfaces/interfaces";
+} from "@/app/services/interfaces/interfaces";
 
 export const getAccounts = async (): Promise<Account[]> => {
     const response = await apiClient.get<Account[]>("/accounts");
