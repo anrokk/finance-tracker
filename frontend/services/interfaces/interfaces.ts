@@ -8,7 +8,7 @@ export interface Account {
 
 export interface CreateAccountData {
     name: string;
-    startingBakance: number;
+    startingBalance: number;
 }
 
 export interface Transaction {
