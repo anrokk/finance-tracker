@@ -23,11 +23,14 @@ export default function Header() {
                     </div>
                     <div className="flex items-center space-x-4">
                         {!isMounted ? (
-                            <div className="w-24 h-8 bg-border/50 animate-pulse rounded-md"></div> 
+                            <div className="w-24 h-8 bg-border/50 animate-pulse rounded-md"></div>
                         ) : isAuthenticated ? (
                             <>
                                 <Link href="/dashboard" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium">
                                     Dashboard
+                                </Link>
+                                <Link href="/categories" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium">
+                                    Categories
                                 </Link>
                                 <button
                                     onClick={logout}
