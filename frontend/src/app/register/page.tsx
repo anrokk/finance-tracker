@@ -65,51 +65,51 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-md p-8 space-y-8 bg-card border border-border rounded-lg shadow-md">
                 <div className="text-center">
-                    <h2 className="text-3xl font-extrabold text-gray-900">
+                    <h2 className="text-3xl font-extrabold text-foreground">
                         Create a new account
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleRegister}>
                     <div>
                         <input id="username" name="username" type="text"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                        {usernameError && <p className="mt-1 text-xs text-red-600">{usernameError}</p>}
+                        {usernameError && <p className="mt-1 text-xs text-red-500">{usernameError}</p>}
                     </div>
                     <div>
                         <input id="email-address" name="email" type="text"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        {emailError && <p className="mt-1 text-xs text-red-600">{emailError}</p>}
+                        {emailError && <p className="mt-1 text-xs text-red-500">{emailError}</p>}
                     </div>
                     <div>
                         <input id="password" name="password" type="password"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        {passwordError && <p className="mt-1 text-xs text-red-600">{passwordError}</p>}
+                        {passwordError && <p className="mt-1 text-xs text-red-500">{passwordError}</p>}
                     </div>
                     <div>
                         <input id="confirm-password" name="confirmPassword" type="password"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                        {confirmPasswordError && <p className="mt-1 text-xs text-red-600">{confirmPasswordError}</p>}
+                        {confirmPasswordError && <p className="mt-1 text-xs text-red-500">{confirmPasswordError}</p>}
                     </div>
 
-                    {formError && (<div className="p-3 text-sm text-red-700 bg-red-100 rounded-md">{formError}</div>)}
+                    {formError && (<div className="p-3 text-sm text-red-700 bg-red-900/20 border border-red-500/50 rounded-md">{formError}</div>)}
 
                     <div>
                         <button type="submit" disabled={loading}
-                            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400">
+                            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring disabled:opacity-50">
                             {loading ? 'Creating account...' : 'Create Account'}
                         </button>
                     </div>
                 </form>
-                <p className="mt-2 text-sm text-center text-gray-600">
+                <p className="mt-2 text-sm text-center text-foreground/80">
                     Already have an account?{' '}
-                    <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="/login" className="font-medium text-primary hover:underline">
                         Sign in
                     </a>
                 </p>

@@ -29,12 +29,12 @@ export default function LoginPage() {
             });
 
             login(response.data.token);
-            
+
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 400) {
                     const validationErrors = err.response.data.errors;
-                    
+
                     if (validationErrors?.Email) {
                         setEmailError(validationErrors.Email[0]);
                     }
@@ -55,10 +55,10 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-md p-8 space-y-8 bg-card border border-border rounded-lg shadow-md">
                 <div className="text-center">
-                    <h2 className="text-3xl font-extrabold text-gray-900">
+                    <h2 className="text-3xl font-extrabold text-foreground">
                         Sign in to your account
                     </h2>
                 </div>
@@ -71,12 +71,12 @@ export default function LoginPage() {
                             id="email-address"
                             name="email"
                             autoComplete="email"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Email address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        {emailError && <p className="mt-1 text-xs text-red-600">{emailError}</p>}
+                        {emailError && <p className="mt-1 text-xs text-red-500">{emailError}</p>}
                     </div>
                     <div>
                         <label htmlFor="password" className="sr-only">
@@ -87,16 +87,16 @@ export default function LoginPage() {
                             name="password"
                             type="password"
                             autoComplete="current-password"
-                            className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        {passwordError && <p className="mt-1 text-xs text-red-600">{passwordError}</p>}
+                        {passwordError && <p className="mt-1 text-xs text-red-500">{passwordError}</p>}
                     </div>
 
                     {formError && (
-                        <div className="p-3 text-sm text-red-700 bg-red-100 rounded-md">
+                        <div className="p-3 text-sm text-red-700 bg-red-900/20 border border-red-500/50 rounded-md">
                             {formError}
                         </div>
                     )}
@@ -105,15 +105,15 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400"
+                            className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring disabled:opacity-50"
                         >
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </div>
                 </form>
-                <p className="mt-2 text-sm text-center text-gray-600">
-                    Don't have an account?{' '}
-                    <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <p className="mt-2 text-sm text-center text-foreground/80">
+                    Don&apos;t have an account?{' '}
+                    <a href="/register" className="font-medium text-primary hover:underline">
                         Register here
                     </a>
                 </p>
