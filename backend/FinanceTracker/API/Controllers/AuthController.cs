@@ -62,7 +62,7 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
             return Ok(GenerateJwtToken(user));
         }
 
-        return Unauthorized("Invalid email or password");
+        return BadRequest("Invalid login attempt.");
     }
 
     private object GenerateJwtToken(AppUser user)

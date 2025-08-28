@@ -17,7 +17,7 @@ export interface Transaction {
     description?: string;
     amount: number;
     date: string;
-    type: 0 | 1; // 0 for expense, 1 for income
+    type: 0 | 1; // 0 for income, 1 for expense
     userId: string;
     accountId?: string;
     accountName?: string;

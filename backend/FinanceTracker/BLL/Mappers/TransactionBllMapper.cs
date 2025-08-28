@@ -28,9 +28,9 @@ public class TransactionBllMapper
         return new CreateTransactionDalDto
         {
             Name = bllDto.Name,
-            Description = bllDto.Description,
+            Description = bllDto.Description!,
             Amount = bllDto.Amount,
-            Date = bllDto.Date,
+            Date = bllDto.Date.ToUniversalTime(),
             Type = bllDto.Type,
             UserId = bllDto.UserId,
             AccountId = bllDto.AccountId,

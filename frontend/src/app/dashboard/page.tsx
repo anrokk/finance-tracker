@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getAccounts, getTransactions } from "../services/apiService";
-import { Account, Transaction } from "../services/interfaces/interfaces";
+import { getAccounts, getCategories, getTransactions } from "../services/apiService";
+import { Account, Transaction, Category } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddAccountForm from "../components/AddAccountForm";
+import AddTransactionForm from "../components/AddTransactionForm";
 
 const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('de-DE', {
         style: 'currency',
         currency: 'EUR'
     }).format(amount);
@@ -18,6 +19,7 @@ export default function DashboardPage() {
     const { isAuthenticated } = useAuth();
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -26,12 +28,14 @@ export default function DashboardPage() {
 
     const fetchData = async () => {
         try {
-            const [accountsData, transactionsData] = await Promise.all([
+            const [accountsData, transactionsData, categoriesData] = await Promise.all([
                 getAccounts(),
-                getTransactions()
+                getTransactions(),
+                getCategories()
             ]);
             setAccounts(accountsData);
             setTransactions(transactionsData);
+            setCategories(categoriesData);
         } catch (err) {
             setError("Failed to load data. Please try again later.");
         } finally {
@@ -45,10 +49,15 @@ export default function DashboardPage() {
         }
     }, [isAuthenticated]);
 
-    const handleAccountAdded = () => {
+    const handleSuccess = () => {
         setIsAddAccountModalOpen(false);
+        setIsAddTransactionModalOpen(false);
         fetchData();
     };
+
+    if (loading) {
+        return <div className="flex items-center justify-center flex-grow">Loading dashboard...</div>;
+    }
 
     if (error) {
         return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
@@ -61,11 +70,8 @@ export default function DashboardPage() {
 
                 <section className="mb-10">
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Accounts</h2>
-                        <button
-                            onClick={() => setIsAddAccountModalOpen(true)}
-                            className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700"
-                        >
+                        <h2 className="text-2xl font-semibold text-gray-800">Your Accounts</h2>
+                        <button onClick={() => setIsAddAccountModalOpen(true)} className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
                             + Add Account
                         </button>
                     </div>
@@ -86,11 +92,8 @@ export default function DashboardPage() {
 
                 <section>
                     <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Recent Transactions</h2>
-                        <button
-                            onClick={() => setIsAddTransactionModalOpen(true)}
-                            className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700"
-                        >
+                        <h2 className="text-2xl font-semibold text-gray-800">Recent Transactions</h2>
+                        <button onClick={() => setIsAddTransactionModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700">
                             + Add Transaction
                         </button>
                     </div>
@@ -120,18 +123,21 @@ export default function DashboardPage() {
                 </section>
             </div>
 
-            <Modal
-                isOpen={isAddAccountModalOpen}
-                onClose={() => setIsAddAccountModalOpen(false)}
-                title="Add New Account"
-            >
+            <Modal isOpen={isAddAccountModalOpen} onClose={() => setIsAddAccountModalOpen(false)} title="Add New Account">
                 <AddAccountForm
-                    onSuccess={handleAccountAdded}
+                    onSuccess={handleSuccess}
                     onClose={() => setIsAddAccountModalOpen(false)}
                 />
             </Modal>
+
+            <Modal isOpen={isAddTransactionModalOpen} onClose={() => setIsAddTransactionModalOpen(false)} title="Add New Transaction">
+                <AddTransactionForm
+                    accounts={accounts}
+                    categories={categories}
+                    onSuccess={handleSuccess}
+                    onClose={() => setIsAddTransactionModalOpen(false)}
+                />
+            </Modal>
         </>
-
-
     );
 }
