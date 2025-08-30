@@ -37,3 +37,12 @@ export const createCategory = async (data: CreateCategoryData): Promise<Category
     const response = await apiClient.post('/Categories', data);
     return response.data;
 };
+
+export const updateCategory = async (id: string, data: CreateCategoryData): Promise<Category> => {
+    const response = await apiClient.put(`/Categories/${id}`, data);
+    return response.data;
+};
+
+export const deleteCategory = async (id: string): Promise<void> => {
+    await apiClient.delete(`/Categories/${id}`);
+};

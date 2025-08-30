@@ -1,18 +1,28 @@
 'use client';
 
-import { useState, FormEvent } from "react";
-import { createCategory } from "../services/apiService";
+import { useState, useEffect, FormEvent } from "react";
+import { createCategory, updateCategory } from "../services/apiService";
+import { Category, CreateCategoryData } from "../services/interfaces/interfaces";
 import axios from "axios";
 
 interface AddCategoryFormProps {
     onSuccess: () => void;
     onClose: () => void;
+    categoryToEdit?: Category | null;
 }
 
-export default function AddCategoryForm({ onSuccess, onClose }: AddCategoryFormProps) {
+export default function AddCategoryForm({ onSuccess, onClose, categoryToEdit }: AddCategoryFormProps) {
     const [name, setName] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const isEditMode = !!categoryToEdit;
+
+    useEffect(() => {
+        if (isEditMode) {
+            setName(categoryToEdit!.name);
+        }
+    }, [isEditMode, categoryToEdit]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -20,22 +30,19 @@ export default function AddCategoryForm({ onSuccess, onClose }: AddCategoryFormP
         setError(null);
 
         try {
-            await createCategory({ name });
+            const categoryData: CreateCategoryData = { name };
+            if (isEditMode) {
+                await updateCategory(categoryToEdit.id, categoryData);
+            } else {
+                await createCategory(categoryData);
+            }
             onSuccess();
         } catch (err) {
-            if (axios.isAxiosError(err) && err.response) {
-                if (err.response.status === 400) {
-                    const validationErrors = err.response.data.errors;
-                    if (validationErrors?.Name) {
-                        setError(validationErrors.Name[0]);
-                    } else {
-                        setError("Failed to create category.");
-                    }
-                } else {
-                    setError("An unexpected error occurred. Please try again.");
-                }
+            if (axios.isAxiosError(err) && err.response?.status === 400) {
+                const validationErrors = err.response.data.errors;
+                setError(validationErrors?.Name?.[0]);
             } else {
-                setError("Could not connect to the server.");
+                setError(`Failed to ${isEditMode ? 'update' : 'create'} category.`);
             }
         } finally {
             setLoading(false);

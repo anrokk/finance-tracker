@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BLL.Validators;
 
-public abstract class CreateTransactionBllDtoValidator : AbstractValidator<CreateTransactionBllDto>
+public class CreateTransactionBllDtoValidator : AbstractValidator<CreateTransactionBllDto>
 {
-    protected CreateTransactionBllDtoValidator()
+    public CreateTransactionBllDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Transaction name is required.")

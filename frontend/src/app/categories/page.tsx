@@ -2,7 +2,7 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import { useAuth } from "../context/AuthContext";
-import { getCategories, createCategory } from "../services/apiService";
+import { getCategories, deleteCategory } from "../services/apiService";
 import { Category } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddCategoryForm from "../components/AddCategoryForm";
@@ -14,6 +14,7 @@ export default function CategoriesPage() {
     const [error, setError] = useState<string | null>(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
     const fetchCategories = async () => {
         try {
@@ -32,10 +33,25 @@ export default function CategoriesPage() {
         }
     }, [isAuthenticated]);
 
-    const handleCategoryAdded = () => {
-        setIsModalOpen(false);
-        fetchCategories();
+    const handleOpenAddModal = () => {
+        setEditingCategory(null);
+        setIsModalOpen(true);
     };
+
+    const handleOpenEditModal = (category: Category) => {
+        setEditingCategory(category);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingCategory(null);
+    };
+
+    const handleSuccess = () => {
+        handleCloseModal();
+        fetchCategories();
+    }
 
     if (loading) {
         return <div className="flex items-center justify-center flex-grow">Loading categories...</div>;
@@ -51,7 +67,7 @@ export default function CategoriesPage() {
                 <div className="flex justify-between items-center mb-8 gap-10">
                     <h1 className="text-3xl font-bold text-foreground">Manage Categories</h1>
                     <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={handleOpenAddModal}
                         className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90"
                     >
                         + Add Category
@@ -65,8 +81,13 @@ export default function CategoriesPage() {
                                 <li key={cat.id} className="p-4 flex justify-between items-center">
                                     <span className="font-medium text-foreground">{cat.name}</span>
                                     <div className="space-x-2">
-                                        <button className="text-sm text-foreground/60 hover:text-primary">Edit</button>
-                                        <button className="text-sm text-red-500/80 hover:text-red-500">Delete</button>
+                                        <button onClick={() => handleOpenEditModal(cat)} className="text-sm text-foreground/60 hover:text-primary">Edit</button>
+                                        <button
+                                            onClick={async () => {
+                                                await deleteCategory(cat.id);
+                                                fetchCategories();
+                                            }}
+                                            className="text-sm text-red-500/80 hover:text-red-500">Delete</button>
                                     </div>
                                 </li>
                             ))
@@ -79,12 +100,13 @@ export default function CategoriesPage() {
 
             <Modal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Add New Category"
+                onClose={handleCloseModal}
+                title={editingCategory ? 'Edit Category' : 'Add Category'}
             >
                 <AddCategoryForm
-                    onSuccess={handleCategoryAdded}
-                    onClose={() => setIsModalOpen(false)}
+                    onSuccess={handleSuccess}
+                    onClose={handleCloseModal}
+                    categoryToEdit={editingCategory}
                 />
             </Modal>
         </>

@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BLL.Validators;
 
-public abstract class CreateAccountBllDtoValidator : AbstractValidator<CreateAccountBllDto>
+public class CreateAccountBllDtoValidator : AbstractValidator<CreateAccountBllDto>
 {
-    protected CreateAccountBllDtoValidator()
+    public CreateAccountBllDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Account name is required.")

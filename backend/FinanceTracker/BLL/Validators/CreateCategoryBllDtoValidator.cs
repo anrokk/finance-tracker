@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BLL.Validators;
 
-public abstract class CreateCategoryBllDtoValidator : AbstractValidator<CreateCategoryBllDto>
+public class CreateCategoryBllDtoValidator : AbstractValidator<CreateCategoryBllDto>
 {
-    protected CreateCategoryBllDtoValidator()
+    public CreateCategoryBllDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
