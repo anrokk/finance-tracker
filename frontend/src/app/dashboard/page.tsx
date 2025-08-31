@@ -23,7 +23,6 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
     const [isAddTransactionModalOpen, setIsAddTransactionModalOpen] = useState(false);
 
     const fetchData = async () => {
@@ -50,7 +49,6 @@ export default function DashboardPage() {
     }, [isAuthenticated]);
 
     const handleSuccess = () => {
-        setIsAddAccountModalOpen(false);
         setIsAddTransactionModalOpen(false);
         fetchData();
     };
@@ -71,9 +69,6 @@ export default function DashboardPage() {
                 <section className="mb-10">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-semibold text-foreground/90">Your Accounts</h2>
-                        <button onClick={() => setIsAddAccountModalOpen(true)} className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90">
-                            + Add Account
-                        </button>
                     </div>
                     {accounts.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -124,13 +119,6 @@ export default function DashboardPage() {
                     </div>
                 </section>
             </div>
-
-            <Modal isOpen={isAddAccountModalOpen} onClose={() => setIsAddAccountModalOpen(false)} title="Add New Account">
-                <AddAccountForm
-                    onSuccess={handleSuccess}
-                    onClose={() => setIsAddAccountModalOpen(false)}
-                />
-            </Modal>
 
             <Modal isOpen={isAddTransactionModalOpen} onClose={() => setIsAddTransactionModalOpen(false)} title="Add New Transaction">
                 <AddTransactionForm

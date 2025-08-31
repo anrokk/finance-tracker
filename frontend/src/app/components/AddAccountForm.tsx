@@ -1,18 +1,30 @@
 'use client';
 
-import { useState, FormEvent } from "react";
-import { createAccount } from "../services/apiService";
+import { useState, useEffect, FormEvent } from "react";
+import { createAccount, updateAccount } from "../services/apiService";
+import { Account, CreateAccountData } from "../services/interfaces/interfaces";
+import axios from "axios";
 
 interface AddAccountFormProps {
     onSuccess: () => void;
     onClose: () => void;
+    accountToEdit?: Account | null;
 }
 
-export default function AddAccountForm({ onSuccess, onClose }: AddAccountFormProps) {
+export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: AddAccountFormProps) {
     const [name, setName] = useState("");
     const [startingBalance, setStartingBalance] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const isEditMode = !!accountToEdit;
+
+    useEffect(() => {
+        if (isEditMode) {
+            setName(accountToEdit!.name);
+            setStartingBalance(accountToEdit!.startingBalance.toString());
+        }
+    }, [isEditMode, accountToEdit]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -20,10 +32,20 @@ export default function AddAccountForm({ onSuccess, onClose }: AddAccountFormPro
         setError(null);
 
         try {
-            await createAccount({ name, startingBalance: parseFloat(startingBalance) });
+            const accountData: CreateAccountData = { name, startingBalance: parseFloat(startingBalance) };
+            if (isEditMode) {
+                await updateAccount(accountToEdit.id, accountData);
+            } else {
+                await createAccount(accountData);
+            }
             onSuccess();
         } catch (err) {
-            setError("Failed to create account. Please try again.");
+            if (axios.isAxiosError(err) && err.response?.status === 400) {
+                const validationErrors = err.response.data.errors;
+                setError(validationErrors?.Name?.[0] || validationErrors?.startingBalance?.[0]);
+            } else {
+                setError(`Failed to ${isEditMode ? 'update' : 'create'} account.`);
+            }
         } finally {
             setLoading(false);
         }
@@ -33,32 +55,29 @@ export default function AddAccountForm({ onSuccess, onClose }: AddAccountFormPro
         <form onSubmit={handleSubmit} className="space-y-4">
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <div>
-                <label htmlFor="accountName" className="block text-sm font-medium text-gray-700">Account Name</label>
+                <label htmlFor="accountName" className="block text-sm font-medium text-foreground/80">Account Name</label>
                 <input
                     type="text"
                     id="accountName"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    required
+                    className={`mt-1 block w-full px-3 py-2 bg-background border rounded-md shadow-sm focus:outline-none focus:ring-2 ${error ? 'border-red-500 ring-red-500' : 'border-input focus:ring-ring'}`}
                 />
             </div>
             <div>
-                <label htmlFor="startingBalance" className="block text-sm font-medium text-gray-700">Starting Balance (€)</label>
+                <label htmlFor="startingBalance"className="block text-sm font-medium text-foreground/80">Starting Balance (€)</label>
                 <input
                     type="number"
                     id="startingBalance"
                     value={startingBalance}
                     onChange={(e) => setStartingBalance(e.target.value)}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    required
-                    step="0.01"
+                    className={`mt-1 block w-full px-3 py-2 bg-background border rounded-md shadow-sm focus:outline-none focus:ring-2 ${error ? 'border-red-500 ring-red-500' : 'border-input focus:ring-ring'}`}
                     min="0"
                 />
             </div>
             <div className="flex justify-end pt-2">
-                <button type="button" onClick={onClose} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md mr-2 hover:bg-gray-300">Cancel</button>
-                <button type="submit" disabled={loading} className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-indigo-400">
+                <button type="button" onClick={onClose} className="bg-background border border-input px-4 py-2 rounded-md mr-2 hover:bg-border">Cancel</button>
+                <button type="submit" disabled={loading} className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 disabled:opacity-50">
                     {loading ? 'Saving...' : 'Save Account'}
                 </button>
             </div>

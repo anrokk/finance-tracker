@@ -9,17 +9,26 @@ import {
 } from "@/app/services/interfaces/interfaces";
 
 export const getAccounts = async (): Promise<Account[]> => {
-    const response = await apiClient.get<Account[]>("/accounts");
+    const response = await apiClient.get<Account[]>("/Accounts");
     return response.data;
 }
 
 export const createAccount = async (data: CreateAccountData): Promise<Account> => {
-    const response = await apiClient.post<Account>("/accounts", data);
+    const response = await apiClient.post<Account>("/Accounts", data);
     return response.data;
 }
 
+export const updateAccount = async (id: string, data: CreateAccountData): Promise<Account> => {
+    const response = await apiClient.put<Account>(`/Accounts/${id}`, data);
+    return response.data;
+}
+
+export const deleteAccount = async (id: string): Promise<void> => {
+    await apiClient.delete(`/Accounts/${id}`);
+}
+
 export const getTransactions = async (): Promise<Transaction[]> => {
-    const response = await apiClient.get<Transaction[]>("/transactions");
+    const response = await apiClient.get<Transaction[]>("/Transactions");
     return response.data;
 }
 

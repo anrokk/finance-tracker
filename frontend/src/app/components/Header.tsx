@@ -29,6 +29,9 @@ export default function Header() {
                                 <Link href="/dashboard" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium">
                                     Dashboard
                                 </Link>
+                                <Link href="/accounts" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium">
+                                    Accounts
+                                </Link>
                                 <Link href="/categories" className="text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium">
                                     Categories
                                 </Link>
