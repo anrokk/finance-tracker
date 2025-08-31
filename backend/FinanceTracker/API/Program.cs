@@ -75,7 +75,10 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryBllDtoValidator>();
-builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterBllDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<LoginBllDtoValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
