@@ -70,7 +70,7 @@ export default function AccountsPage() {
                         onClick={handleOpenAddModal}
                         className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90"
                     >
-                        + Add Account
+                        Add Account
                     </button>
                 </div>
 

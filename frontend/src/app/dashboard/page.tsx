@@ -63,15 +63,15 @@ export default function DashboardPage() {
 
     return (
         <>
-            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <h1 className="text-3xl font-bold text-foreground mb-8">Dashboard</h1>
 
-                <section className="mb-10">
+                <section className="mb-16">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-semibold text-foreground/90">Your Accounts</h2>
                     </div>
                     {accounts.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {accounts.map((account) => (
                                 <div key={account.id} className="bg-card border border-border p-6 rounded-lg shadow">
                                     <h3 className="text-xl font-bold text-foreground">{account.name}</h3>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                 </section>
 
                 <section>
-                    <div className="flex justify-between items-center mb-4">
+                    <div className="flex justify-between items-center mb-6 gap-10">
                         <h2 className="text-2xl font-semibold text-foreground/90">Recent Transactions</h2>
                         <button onClick={() => setIsAddTransactionModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700">
                             + Add Transaction
@@ -98,7 +98,7 @@ export default function DashboardPage() {
                         <ul className="divide-y divide-border">
                             {transactions.length > 0 ? (
                                 transactions.slice(0, 10).map((tx) => (
-                                    <li key={tx.id} className="p-4 flex justify-between items-center">
+                                    <li key={tx.id} className="p-6 flex justify-between items-center">
                                         <div className="flex-1">
                                             <p className="font-semibold text-white truncate">{tx.name}</p>
                                             <div className="flex items-center text-sm text-gray-500 mt-1">

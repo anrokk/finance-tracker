@@ -37,6 +37,15 @@ export const createTransaction = async (data: CreateTransactionData): Promise<Tr
     return response.data;
 };
 
+export const updateTransaction = async (id: string, data: CreateTransactionData): Promise<Transaction> => {
+    const response = await apiClient.put(`/Transactions/${id}`, data);
+    return response.data;
+};
+
+export const deleteTransaction = async (id: string): Promise<void> => {
+    await apiClient.delete(`/Transactions/${id}`);
+}
+
 export const getCategories = async (): Promise<Category[]> => {
     const response = await apiClient.get('/Categories');
     return response.data;

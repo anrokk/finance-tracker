@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getCategories, deleteCategory } from "../services/apiService";
 import { Category } from "../services/interfaces/interfaces";
@@ -70,7 +70,7 @@ export default function CategoriesPage() {
                         onClick={handleOpenAddModal}
                         className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90"
                     >
-                        + Add Category
+                        Add Category
                     </button>
                 </div>
 

@@ -32,7 +32,8 @@ export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: Ad
         setError(null);
 
         try {
-            const balance = parseFloat(startingBalance) || 0;
+            const formattedBalance = startingBalance.replace(',', '.');
+            const balance = parseFloat(formattedBalance) || 0;
             const accountData: CreateAccountData = { name, startingBalance: balance };
             if (isEditMode) {
                 await updateAccount(accountToEdit!.id, accountData);
@@ -68,7 +69,8 @@ export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: Ad
             <div>
                 <label htmlFor="startingBalance" className="block text-sm font-medium text-foreground/80">Starting Balance (€)</label>
                 <input
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     id="startingBalance"
                     value={startingBalance}
                     onChange={(e) => setStartingBalance(e.target.value)}
