@@ -1,5 +1,6 @@
 using System.Text;
 using BLL.Contracts;
+using BLL.DTOs.Identity;
 using BLL.Service;
 using BLL.Validators;
 using BLL.Validators.Auth;
@@ -74,11 +75,8 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryBllDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateAccountBllDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateTransactionBllDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<RegisterBllDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<LoginBllDtoValidator>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

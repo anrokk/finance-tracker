@@ -32,9 +32,10 @@ export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: Ad
         setError(null);
 
         try {
-            const accountData: CreateAccountData = { name, startingBalance: parseFloat(startingBalance) };
+            const balance = parseFloat(startingBalance) || 0;
+            const accountData: CreateAccountData = { name, startingBalance: balance };
             if (isEditMode) {
-                await updateAccount(accountToEdit.id, accountData);
+                await updateAccount(accountToEdit!.id, accountData);
             } else {
                 await createAccount(accountData);
             }
@@ -53,7 +54,6 @@ export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: Ad
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <p className="text-red-500 text-sm">{error}</p>}
             <div>
                 <label htmlFor="accountName" className="block text-sm font-medium text-foreground/80">Account Name</label>
                 <input
@@ -64,8 +64,9 @@ export default function AddAccountForm({ onSuccess, onClose, accountToEdit }: Ad
                     className={`mt-1 block w-full px-3 py-2 bg-background border rounded-md shadow-sm focus:outline-none focus:ring-2 ${error ? 'border-red-500 ring-red-500' : 'border-input focus:ring-ring'}`}
                 />
             </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
             <div>
-                <label htmlFor="startingBalance"className="block text-sm font-medium text-foreground/80">Starting Balance (€)</label>
+                <label htmlFor="startingBalance" className="block text-sm font-medium text-foreground/80">Starting Balance (€)</label>
                 <input
                     type="number"
                     id="startingBalance"

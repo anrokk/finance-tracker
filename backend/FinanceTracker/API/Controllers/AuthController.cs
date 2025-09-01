@@ -22,10 +22,21 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
         [FromServices] IValidator<RegisterBllDto> validator
     )
     {
-        var validationResult = await validator.ValidateAsync(model);
-        if (!validationResult.IsValid)
+        var existingUserByEmail = await userManager.FindByEmailAsync(model.Email);
+        if (existingUserByEmail != null)
         {
-            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
+            ModelState.AddModelError(nameof(model.Email), "An account with this email already exists.");
+        }
+
+        var existingUserByUsername = await userManager.FindByNameAsync(model.Username);
+        if (existingUserByUsername != null)
+        {
+            ModelState.AddModelError(nameof(model.Username), "An account with this username already exists.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
         }
 
         var user = new AppUser
@@ -41,7 +52,12 @@ public class AuthController(UserManager<AppUser> userManager, IConfiguration con
             return Ok(GenerateJwtToken(user));
         }
 
-        return BadRequest(result.Errors);
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return ValidationProblem(ModelState);
     }
 
     [HttpPost("login")]

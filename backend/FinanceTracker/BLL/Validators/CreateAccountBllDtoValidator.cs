@@ -8,7 +8,7 @@ public class CreateAccountBllDtoValidator : AbstractValidator<CreateAccountBllDt
     public CreateAccountBllDtoValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Account name is required.")
+            .NotEmpty().WithMessage("Name is required.")
             .MaximumLength(100).WithMessage("Account name must not exceed 100 characters.");
 
         RuleFor(x => x.StartingBalance)
