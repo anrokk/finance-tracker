@@ -82,7 +82,7 @@ export default function DashboardPage() {
                         </div>
                     ) : (
                         <div className="bg-card border-border p-6 rounded-lg text-center text-foreground/60">
-                            You haven't added any accounts yet.
+                            You have not added any accounts yet.
                         </div>
                     )}
                 </section>

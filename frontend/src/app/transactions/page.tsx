@@ -114,7 +114,7 @@ export default function TransactionsPage() {
                         </tbody>
                     </table>
                     {transactions.length === 0 && (
-                        <p className="p-4 text-center text-foreground/60">You haven't added any transactions yet.</p>
+                        <p className="p-4 text-center text-foreground/60">You have not added any transactions yet.</p>
                     )}
                 </div>
             </div>

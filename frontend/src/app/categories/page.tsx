@@ -92,7 +92,7 @@ export default function CategoriesPage() {
                                 </li>
                             ))
                         ) : (
-                            <li className="p-4 text-center text-foreground/60">You haven't created any categories yet.</li>
+                            <li className="p-4 text-center text-foreground/60">You have not created any categories yet.</li>
                         )}
                     </ul>
                 </div>
