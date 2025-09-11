@@ -55,8 +55,8 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-4">
-            <div className="w-full max-w-md p-8 space-y-6 bg-card border border-border rounded-xl shadow-sm">
+        <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 py-8">
+            <div className="w-full max-w-md p-6 space-y-6 bg-card border border-border rounded-xl shadow-sm">
                 <div className="text-center">
                     <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
                         Sign in to your account

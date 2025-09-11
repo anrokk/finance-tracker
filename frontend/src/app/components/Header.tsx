@@ -11,14 +11,14 @@ export default function Header() {
 
     useEffect(() => {
         setIsMounted(true);
-    });
+    }, []);
 
     return (
         <header className="bg-card/80 border-b border-border backdrop-blur supports-[backdrop-filter]:bg-card/70">
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0">
-                        <Link href={isAuthenticated && isMounted ? "/dashboard" : "/"} className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground hover:text-primary transition-colors">
+                        <Link href={isMounted && isAuthenticated ? "/dashboard" : "/"} className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground hover:text-primary transition-colors" suppressHydrationWarning>
                             FiTrack
                         </Link>
                     </div>
