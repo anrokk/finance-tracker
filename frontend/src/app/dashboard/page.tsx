@@ -7,6 +7,7 @@ import { Account, Transaction, Category } from "../services/interfaces/interface
 import Modal from "../components/Modal";
 import AddAccountForm from "../components/AddAccountForm";
 import AddTransactionForm from "../components/AddTransactionForm";
+import { Plus, CalendarDays, Wallet } from "lucide-react";
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('de-DE', {
@@ -54,7 +55,7 @@ export default function DashboardPage() {
     };
 
     if (loading) {
-        return <div className="flex items-center justify-center flex-grow">Loading dashboard...</div>;
+        return <div className="flex items-center justify-center flex-grow text-foreground/60">Loading dashboard...</div>;
     }
 
     if (error) {
@@ -63,57 +64,57 @@ export default function DashboardPage() {
 
     return (
         <>
-            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl font-bold text-foreground mb-8">Dashboard</h1>
+            <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-8">Dashboard</h1>
 
-                <section className="mb-16">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-2xl font-semibold text-foreground/90">Your Accounts</h2>
+                <section className="mb-14">
+                    <div className="flex justify-between items-center mb-3">
+                        <h2 className="text-xl sm:text-2xl font-medium text-foreground/90 inline-flex items-center gap-2"><Wallet className="w-5 h-5"/> Your Accounts</h2>
                     </div>
                     {accounts.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {accounts.map((account) => (
-                                <div key={account.id} className="bg-card border border-border p-6 rounded-lg shadow">
-                                    <h3 className="text-xl font-bold text-foreground">{account.name}</h3>
-                                    <p className="text-3xl font-semibold text-primary mt-2">{formatCurrency(account.currentBalance)}</p>
-                                    <p className="text-sm text-foreground/60 mt-1">Initial Balance: {formatCurrency(account.startingBalance)}</p>
+                                <div key={account.id} className="bg-card border border-border px-5 py-4 rounded-xl shadow-sm">
+                                    <h3 className="text-lg font-medium text-foreground">{account.name}</h3>
+                                    <p className="text-2xl font-semibold text-primary mt-1">{formatCurrency(account.currentBalance)}</p>
+                                    <p className="text-xs text-foreground/60 mt-1">Initial Balance: {formatCurrency(account.startingBalance)}</p>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <div className="bg-card border-border p-6 rounded-lg text-center text-foreground/60">
+                        <div className="bg-card border border-border p-6 rounded-xl text-center text-foreground/60">
                             You have not added any accounts yet.
                         </div>
                     )}
                 </section>
 
                 <section>
-                    <div className="flex justify-between items-center mb-6 gap-10">
-                        <h2 className="text-2xl font-semibold text-foreground/90">Recent Transactions</h2>
-                        <button onClick={() => setIsAddTransactionModalOpen(true)} className="bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700">
-                            + Add Transaction
+                    <div className="flex justify-between items-center mb-5 gap-6">
+                        <h2 className="text-xl sm:text-2xl font-medium text-foreground/90 inline-flex items-center gap-2"><CalendarDays className="w-5 h-5"/> Recent Transactions</h2>
+                        <button onClick={() => setIsAddTransactionModalOpen(true)} className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/90">
+                            <Plus className="w-4 h-4"/> Add Transaction
                         </button>
                     </div>
-                    <div className="bg-card rounded-lg shadow overflow-hidden border border-border">
+                    <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border">
                         <ul className="divide-y divide-border">
                             {transactions.length > 0 ? (
                                 transactions.slice(0, 10).map((tx) => (
-                                    <li key={tx.id} className="p-6 flex justify-between items-center">
+                                    <li key={tx.id} className="px-5 py-4 flex justify-between items-center">
                                         <div className="flex-1">
-                                            <p className="font-semibold text-white truncate">{tx.name}</p>
-                                            <div className="flex items-center text-sm text-gray-500 mt-1">
+                                            <p className="font-medium text-foreground truncate">{tx.name}</p>
+                                            <div className="flex items-center text-xs text-foreground/60 mt-1">
                                                 <span>{new Date(tx.date).toLocaleDateString()}</span>
                                                 <span className="mx-2">|</span>
                                                 <span>{tx.accountName || 'N/A'}</span>
                                             </div>
                                         </div>
-                                        <p className={`text-lg font-bold ${tx.type === 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                        <p className={`text-base sm:text-lg font-semibold ${tx.type === 0 ? 'text-green-600' : 'text-red-600'}`}>
                                             {tx.type === 0 ? '+' : '-'} {formatCurrency(tx.amount)}
                                         </p>
                                     </li>
                                 ))
                             ) : (
-                                <li className="p-4 text-center text-gray-500">No transactions found.</li>
+                                <li className="p-4 text-center text-foreground/60">No transactions found.</li>
                             )}
                         </ul>
                     </div>

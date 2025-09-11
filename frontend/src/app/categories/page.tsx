@@ -6,6 +6,7 @@ import { getCategories, deleteCategory } from "../services/apiService";
 import { Category } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddCategoryForm from "../components/AddCategoryForm";
+import { Plus, Pencil, Trash2, Tags } from "lucide-react";
 
 export default function CategoriesPage() {
     const { isAuthenticated } = useAuth();
@@ -54,7 +55,7 @@ export default function CategoriesPage() {
     }
 
     if (loading) {
-        return <div className="flex items-center justify-center flex-grow">Loading categories...</div>;
+        return <div className="flex items-center justify-center flex-grow text-foreground/60">Loading categories...</div>;
     }
 
     if (error) {
@@ -63,31 +64,35 @@ export default function CategoriesPage() {
 
     return (
         <>
-            <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center mb-8 gap-10">
-                    <h1 className="text-3xl font-bold text-foreground">Manage Categories</h1>
+            <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center mb-6 gap-6">
+                    <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground inline-flex items-center gap-2"><Tags className="w-5 h-5"/> Manage Categories</h1>
                     <button
                         onClick={handleOpenAddModal}
-                        className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90"
+                        className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/90"
                     >
-                        Add Category
+                        <Plus className="w-4 h-4"/> Add Category
                     </button>
                 </div>
 
-                <div className="bg-card rounded-lg shadow overflow-hidden border border-border">
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border">
                     <ul className="divide-y divide-border">
                         {categories.length > 0 ? (
                             categories.map((cat) => (
-                                <li key={cat.id} className="p-4 flex justify-between items-center">
-                                    <span className="font-medium text-foreground">{cat.name}</span>
-                                    <div className="space-x-2">
-                                        <button onClick={() => handleOpenEditModal(cat)} className="text-sm text-foreground/60 hover:text-primary">Edit</button>
+                                <li key={cat.id} className="px-5 py-4 flex justify-between items-center">
+                                    <span className="font-medium text-foreground truncate">{cat.name}</span>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => handleOpenEditModal(cat)} className="inline-flex items-center gap-1.5 text-sm text-foreground/70 hover:text-primary">
+                                            <Pencil className="w-4 h-4"/> Edit
+                                        </button>
                                         <button
                                             onClick={async () => {
                                                 await deleteCategory(cat.id);
                                                 fetchCategories();
                                             }}
-                                            className="text-sm text-red-500/80 hover:text-red-500">Delete</button>
+                                            className="inline-flex items-center gap-1.5 text-sm text-red-600/80 hover:text-red-600">
+                                            <Trash2 className="w-4 h-4"/> Delete
+                                        </button>
                                     </div>
                                 </li>
                             ))

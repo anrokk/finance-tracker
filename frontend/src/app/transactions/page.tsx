@@ -6,6 +6,7 @@ import { getAccounts, getCategories, getTransactions, deleteTransaction } from "
 import { Account, Transaction, Category } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddTransactionForm from "../components/AddTransactionForm";
+import { Plus, Pencil, Trash2, FileSpreadsheet } from "lucide-react";
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('de-DE', {
@@ -68,7 +69,7 @@ export default function TransactionsPage() {
     };
 
     if (loading) {
-        return <div className="flex items-center justify-center flex-grow">Loading transactions...</div>;
+        return <div className="flex items-center justify-center flex-grow text-foreground/60">Loading transactions...</div>;
     }
 
     if (error) {
@@ -77,37 +78,43 @@ export default function TransactionsPage() {
 
     return (
         <>
-            <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center mb-8 gap-10">
-                    <h1 className="text-3xl font-bold text-foreground">Manage Transactions</h1>
-                    <button onClick={handleOpenAddModal} className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90">
-                        Add Transaction
+            <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center mb-6 gap-6">
+                    <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground inline-flex items-center gap-2"><FileSpreadsheet className="w-5 h-5"/> Manage Transactions</h1>
+                    <button onClick={handleOpenAddModal} className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/90">
+                        <Plus className="w-4 h-4"/> Add Transaction
                     </button>
                 </div>
 
-                <div className="bg-card rounded-lg shadow overflow-hidden border border-border">
-                    <table className="min-w-full divide-y divide-border">
-                        <thead className="bg-border/50">
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border">
+                    <table className="min-w-full divide-y divide-border text-sm">
+                        <thead className="bg-border/40">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-foreground/80 uppercase tracking-wider">Name</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-foreground/80 uppercase tracking-wider">Amount</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-foreground/80 uppercase tracking-wider">Account</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-foreground/80 uppercase tracking-wider">Category</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-foreground/80 uppercase tracking-wider">Date</th>
-                                <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
+                                <th scope="col" className="px-5 py-3 text-left font-medium text-foreground/80 uppercase tracking-wider">Name</th>
+                                <th scope="col" className="px-5 py-3 text-left font-medium text-foreground/80 uppercase tracking-wider">Amount</th>
+                                <th scope="col" className="px-5 py-3 text-left font-medium text-foreground/80 uppercase tracking-wider">Account</th>
+                                <th scope="col" className="px-5 py-3 text-left font-medium text-foreground/80 uppercase tracking-wider">Category</th>
+                                <th scope="col" className="px-5 py-3 text-left font-medium text-foreground/80 uppercase tracking-wider">Date</th>
+                                <th scope="col" className="relative px-5 py-3"><span className="sr-only">Actions</span></th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
                             {transactions.map((tx) => (
                                 <tr key={tx.id}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">{tx.name}</td>
-                                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-semibold ${tx.type === 0 ? 'text-green-500' : 'text-red-500'}`}>{formatCurrency(tx.amount)}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground/80">{tx.accountName}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground/80">{tx.categoryName || 'N/A'}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground/80">{new Date(tx.date).toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
-                                        <button onClick={() => handleOpenEditModal(tx)} className="text-foreground/60 hover:text-primary">Edit</button>
-                                        <button onClick={async () => { await deleteTransaction(tx.id); fetchData(); }} className="text-red-500/80 hover:text-red-500">Delete</button>
+                                    <td className="px-5 py-3 whitespace-nowrap font-medium text-foreground">{tx.name}</td>
+                                    <td className={`px-5 py-3 whitespace-nowrap font-semibold ${tx.type === 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(tx.amount)}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-foreground/80">{tx.accountName}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-foreground/80">{tx.categoryName || 'N/A'}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-foreground/80">{new Date(tx.date).toLocaleDateString()}</td>
+                                    <td className="px-5 py-3 whitespace-nowrap text-right font-medium">
+                                        <div className="inline-flex items-center gap-3">
+                                            <button onClick={() => handleOpenEditModal(tx)} className="inline-flex items-center gap-1.5 text-foreground/70 hover:text-primary">
+                                                <Pencil className="w-4 h-4"/> Edit
+                                            </button>
+                                            <button onClick={async () => { await deleteTransaction(tx.id); fetchData(); }} className="inline-flex items-center gap-1.5 text-red-600/80 hover:text-red-600">
+                                                <Trash2 className="w-4 h-4"/> Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

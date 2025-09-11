@@ -55,14 +55,14 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="w-full max-w-md p-8 space-y-8 bg-card border border-border rounded-lg shadow-md">
+        <div className="flex items-center justify-center min-h-screen px-4">
+            <div className="w-full max-w-md p-8 space-y-6 bg-card border border-border rounded-xl shadow-sm">
                 <div className="text-center">
-                    <h2 className="text-3xl font-extrabold text-foreground">
+                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
                         Sign in to your account
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+                <form className="mt-6 space-y-5" onSubmit={handleLogin}>
                     <div>
                         <label htmlFor="email-address" className="sr-only">
                             Email address

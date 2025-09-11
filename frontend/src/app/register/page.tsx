@@ -65,14 +65,14 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="w-full max-w-md p-8 space-y-8 bg-card border border-border rounded-lg shadow-md">
+        <div className="flex items-center justify-center min-h-screen px-4">
+            <div className="w-full max-w-md p-8 space-y-6 bg-card border border-border rounded-xl shadow-sm">
                 <div className="text-center">
-                    <h2 className="text-3xl font-extrabold text-foreground">
+                    <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
                         Create a new account
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleRegister}>
+                <form className="mt-6 space-y-5" onSubmit={handleRegister}>
                     <div>
                         <input id="username" name="username" type="text"
                             className="relative block w-full px-3 py-2 bg-background border border-input rounded-md placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-ring"

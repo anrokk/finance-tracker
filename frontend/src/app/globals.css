@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
+/* Minimalist light palette, restrained accent */
 :root {
-  --background: 240 10% 3.9%; 
-  --foreground: 0 0% 98%;   
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
+  --background: 210 20% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
 
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
 
-  --primary: 173 80% 40%; 
-  --primary-foreground: 173 80% 98%;
+  --primary: 173 40% 30%;
+  --primary-foreground: 0 0% 100%;
 
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
 
-  --ring: 173 80% 40%;
+  --ring: 173 40% 30%;
 }
 
 @theme {

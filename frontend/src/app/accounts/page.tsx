@@ -6,6 +6,7 @@ import { getAccounts, deleteAccount } from "../services/apiService";
 import { Account } from "../services/interfaces/interfaces";
 import Modal from "../components/Modal";
 import AddAccountForm from "../components/AddAccountForm";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 
 export default function AccountsPage() {
     const { isAuthenticated } = useAuth();
@@ -54,7 +55,7 @@ export default function AccountsPage() {
     };
 
     if (loading) {
-        return <div className="flex items-center justify-center flex-grow">Loading accounts...</div>;
+        return <div className="flex items-center justify-center flex-grow text-foreground/60">Loading accounts...</div>;
     }
 
     if (error) {
@@ -63,31 +64,35 @@ export default function AccountsPage() {
 
     return (
         <>
-            <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center mb-8 gap-10">
-                    <h1 className="text-3xl font-bold text-foreground">Manage Accounts</h1>
+            <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center mb-6 gap-6">
+                    <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">Manage Accounts</h1>
                     <button
                         onClick={handleOpenAddModal}
-                        className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90"
+                        className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover:bg-primary/90"
                     >
-                        Add Account
+                        <Plus className="w-4 h-4"/> Add Account
                     </button>
                 </div>
 
-                <div className="bg-card rounded-lg shadow overflow-hidden border border-border">
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border">
                     <ul className="divide-y divide-border">
                         {accounts.length > 0 ? (
                             accounts.map((acc) => (
-                                <li key={acc.id} className="p-4 flex justify-between items-center">
-                                    <span className="font-medium text-foreground">{acc.name}</span>
-                                    <div className="space-x-2">
-                                        <button onClick={() => handleOpenEditModal(acc)} className="text-sm text-foreground/60 hover:text-primary">Edit</button>
+                                <li key={acc.id} className="px-5 py-4 flex justify-between items-center">
+                                    <span className="font-medium text-foreground truncate">{acc.name}</span>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => handleOpenEditModal(acc)} className="inline-flex items-center gap-1.5 text-sm text-foreground/70 hover:text-primary">
+                                            <Pencil className="w-4 h-4"/> Edit
+                                        </button>
                                         <button
                                             onClick={async () => {
                                                 await deleteAccount(acc.id);
                                                 fetchAccounts();
                                             }}
-                                            className="text-sm text-red-500/80 hover:text-red-500">Delete</button>
+                                            className="inline-flex items-center gap-1.5 text-sm text-red-600/80 hover:text-red-600">
+                                            <Trash2 className="w-4 h-4"/> Delete
+                                        </button>
                                     </div>
                                 </li>
                             ))
