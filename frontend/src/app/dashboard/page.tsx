@@ -7,7 +7,8 @@ import { Account, Transaction, Category } from "../services/interfaces/interface
 import Modal from "../components/Modal";
 import AddAccountForm from "../components/AddAccountForm";
 import AddTransactionForm from "../components/AddTransactionForm";
-import { Plus, CalendarDays, Wallet } from "lucide-react";
+import { Plus, CalendarDays, Wallet, PieChart } from "lucide-react";
+import CategorySpendingChart from "../components/CategorySpendingChart";
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('de-DE', {
@@ -86,6 +87,13 @@ export default function DashboardPage() {
                             You have not added any accounts yet.
                         </div>
                     )}
+                </section>
+
+                <section className="mb-14">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl sm:text-2xl font-medium text-foreground/90 inline-flex items-center gap-2"><PieChart className="w-5 h-5"/> Overview</h2>
+                    </div>
+                    <CategorySpendingChart transactions={transactions} />
                 </section>
 
                 <section>
