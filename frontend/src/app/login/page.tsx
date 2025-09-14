@@ -59,7 +59,7 @@ export default function LoginPage() {
             <div className="w-full max-w-md p-6 space-y-6 bg-card border border-border rounded-xl shadow-sm">
                 <div className="text-center">
                     <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-                        Sign in to your account
+                        Sign in to your account.
                     </h2>
                 </div>
                 <form className="mt-6 space-y-5" onSubmit={handleLogin}>
