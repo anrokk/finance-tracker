@@ -14,6 +14,8 @@ interface TransactionLike {
 
 interface Props {
     transactions: TransactionLike[];
+    selectedMonth?: string;
+    onSelectedMonthChange?: (month: string) => void;
 }
 
 function formatMonth(date: Date) {
@@ -22,8 +24,10 @@ function formatMonth(date: Date) {
 
 type ChartType = 'bar' | 'pie';
 
-export default function CategorySpendingChart({ transactions }: Props) {
-    const [selectedMonth, setSelectedMonth] = useState<string>(formatMonth(new Date()));
+export default function CategorySpendingChart({ transactions, selectedMonth: controlledSelectedMonth, onSelectedMonthChange }: Props) {
+    const [uncontrolledSelectedMonth, setUncontrolledSelectedMonth] = useState<string>(formatMonth(new Date()));
+    const selectedMonth = controlledSelectedMonth ?? uncontrolledSelectedMonth;
+    const setSelectedMonth = onSelectedMonthChange ?? setUncontrolledSelectedMonth;
     const [chartType, setChartType] = useState<ChartType>('bar');
 
     const months = useMemo(() => {

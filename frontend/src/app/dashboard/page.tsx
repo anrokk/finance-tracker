@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { getAccounts, getCategories, getTransactions } from "../services/apiService";
 import { Account, Transaction, Category } from "../services/interfaces/interfaces";
@@ -17,6 +17,12 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
+const formatMonth = (date: Date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+const formatMonthLabel = (yyyyMm: string) => {
+    const d = new Date(`${yyyyMm}-01T00:00:00`);
+    return d.toLocaleString(undefined, { month: 'long', year: 'numeric' });
+};
+
 export default function DashboardPage() {
     const { isAuthenticated } = useAuth();
     const [accounts, setAccounts] = useState<Account[]>([]);
@@ -26,6 +32,19 @@ export default function DashboardPage() {
     const [error, setError] = useState<string | null>(null);
 
     const [isAddTransactionModalOpen, setIsAddTransactionModalOpen] = useState(false);
+    const [selectedMonth, setSelectedMonth] = useState<string>(formatMonth(new Date()));
+
+    const totalSpentForSelectedMonth = useMemo(() => {
+        let sum = 0;
+        transactions.forEach(t => {
+            const d = new Date(t.date);
+            const monthKey = formatMonth(d);
+            if (monthKey !== selectedMonth) return;
+            if (t.type !== 1) return; // only expenses
+            sum += Math.abs(t.amount);
+        });
+        return sum;
+    }, [transactions, selectedMonth]);
 
     const fetchData = async () => {
         try {
@@ -92,8 +111,15 @@ export default function DashboardPage() {
                 <section className="mb-14">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl sm:text-2xl font-medium text-foreground/90 inline-flex items-center gap-2"><PieChart className="w-5 h-5"/> Overview</h2>
+                        <div className="text-sm sm:text-base text-foreground/80">
+                            Total spent {formatMonthLabel(selectedMonth)}: {formatCurrency(totalSpentForSelectedMonth)}
+                        </div>
                     </div>
-                    <CategorySpendingChart transactions={transactions} />
+                    <CategorySpendingChart
+                        transactions={transactions}
+                        selectedMonth={selectedMonth}
+                        onSelectedMonthChange={setSelectedMonth}
+                    />
                 </section>
 
                 <section>
